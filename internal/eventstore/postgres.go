@@ -26,7 +26,12 @@ func (s *Postgres) Append(ctx context.Context, aggregateID string, expectedVersi
 	if len(events) == 0 {
 		return nil
 	}
-	tx, err := s.db.BeginTx(ctx, nil)
+	// SERIALIZABLE garante que não há race conditions: se dois writers tentam
+	// escrever versões sequenciais do mesmo aggregate, exatamente um sucede.
+	txOpts := &sql.TxOptions{
+		Isolation: sql.LevelSerializable,
+	}
+	tx, err := s.db.BeginTx(ctx, txOpts)
 	if err != nil {
 		return fmt.Errorf("begin tx: %w", err)
 	}
