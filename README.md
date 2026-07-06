@@ -1,5 +1,9 @@
 # eventledger
 
+[![ci](https://github.com/viitorveloso/eventledger/actions/workflows/ci.yml/badge.svg)](https://github.com/viitorveloso/eventledger/actions/workflows/ci.yml)
+[![Go](https://img.shields.io/badge/Go-1.22-00ADD8?logo=go)](https://go.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Ledger bancário com **Event Sourcing + CQRS** em Go. Contas, depósitos, saques e transferências entre contas com consistência garantida sob concorrência, trilha de auditoria imutável e recuperação automática de falhas.
 
 Uma única dependência externa (`lib/pq`, o driver Postgres). Todo o resto — event store, bus particionado, saga, projeções, idempotência HTTP, rate limiting — é implementado do zero na stdlib, porque o objetivo do projeto é demonstrar a **lógica**, não colar bibliotecas.
