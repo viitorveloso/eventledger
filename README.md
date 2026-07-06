@@ -4,6 +4,8 @@
 [![Go](https://img.shields.io/badge/Go-1.22-00ADD8?logo=go)](https://go.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+Event-sourced ledger in Go — transfers, sagas, Postgres & memory.
+
 Ledger bancário com **Event Sourcing + CQRS** em Go. Contas, depósitos, saques e transferências entre contas com consistência garantida sob concorrência, trilha de auditoria imutável e recuperação automática de falhas.
 
 Uma única dependência externa (`lib/pq`, o driver Postgres). Todo o resto — event store, bus particionado, saga, projeções, idempotência HTTP, rate limiting — é implementado do zero na stdlib, porque o objetivo do projeto é demonstrar a **lógica**, não colar bibliotecas.
@@ -13,7 +15,21 @@ docker compose up --build -d   # sobe Postgres + API em :8080
 ./scripts/demo.sh              # roteiro completo de demonstração
 go test -race ./...            # unidade + concorrência, sem infra
 ```
+## Quick Start
 
+Rápido para começar localmente:
+
+```bash
+# Docker (recomendado)
+docker compose up --build -d
+./scripts/demo.sh
+
+# Local (Postgres em localhost:5432, user/pass/db: ledger)
+go run ./cmd/api
+
+# Testes rápidos
+go test ./...
+```
 ## Arquitetura
 
 ```mermaid
@@ -115,6 +131,15 @@ internal/api/       HTTP, idempotência, rate limit, mapeamento de erros
 migrations/         schema (write side + read side)
 ```
 
+<<<<<<< HEAD
+=======
+## Topics & Contributing
+
+- Topics recomendados: `go`, `event-sourcing`, `postgres`, `ledger`, `saga`, `idempotency`
+
+Contribuições são bem-vindas. Abra issues para bugs ou features e PRs na branch `main` com descrições claras das mudanças e comandos para reproduzir locais.
+
+>>>>>>> chore/split-initial
 ## Evolução para produção
 
 O desenho já separa as portas; a troca é de implementação:
