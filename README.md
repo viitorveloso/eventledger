@@ -131,7 +131,7 @@ internal/api/       HTTP, idempotência, rate limit, mapeamento de erros
 migrations/         schema (write side + read side)
 ```
 
-<<<<<<< HEAD
+HEAD
 =======
 ## Topics & Contributing
 
