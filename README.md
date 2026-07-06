@@ -8,7 +8,7 @@ Event-sourced ledger in Go — transfers, sagas, Postgres & memory.
 
 Ledger bancário com **Event Sourcing + CQRS** em Go. Contas, depósitos, saques e transferências entre contas com consistência garantida sob concorrência, trilha de auditoria imutável e recuperação automática de falhas.
 
-Uma única dependência externa (`lib/pq`, o driver Postgres). Todo o resto — event store, bus particionado, saga, projeções, idempotência HTTP, rate limiting — é implementado do zero na stdlib, porque o objetivo do projeto é demonstrar a **lógica**, não colar bibliotecas.
+Uma única dependência externa (`lib/pq`, o driver Postgres). Todo o resto  event store, bus particionado, saga, projeções, idempotência HTTP, rate limiting é implementado do zero na stdlib, porque o objetivo do projeto é demonstrar a **lógica**, não colar bibliotecas.
 
 ```bash
 docker compose up --build -d   # sobe Postgres + API em :8080
@@ -51,11 +51,11 @@ flowchart LR
     C -->|GET| QRY
 ```
 
-**Fluxo de escrita.** Todo comando carrega o agregado (replay do stream de eventos, acelerado por snapshot), valida a regra de negócio contra o estado atual e faz `append` exigindo a versão esperada. O estado nunca é atualizado — apenas eventos são acrescentados. `GET /accounts/{id}/events` expõe a trilha completa.
+**Fluxo de escrita.** Todo comando carrega o agregado (replay do stream de eventos, acelerado por snapshot), valida a regra de negócio contra o estado atual e faz `append` exigindo a versão esperada. O estado nunca é atualizado apenas eventos são acrescentados. `GET /accounts/{id}/events` expõe a trilha completa.
 
 **Fluxo de leitura.** Saldo, extrato e status de transferência saem exclusivamente dos read models materializados pelo projetor. O event store nunca é consultado para servir leitura.
 
-**Transferência (saga).** O débito da origem é **síncrono**: saldo é validado na hora e transferência sem fundos recebe `422` imediatamente — nada de aceitar com `202` para falhar depois. O crédito no destino é assíncrono; se for impossível (conta inexistente/fechada), a saga emite `transfer.reversed` na origem e o dinheiro volta. O cliente acompanha em `GET /transfers/{id}`: `pending → completed | reversed`.
+**Transferência (saga).** O débito da origem é **síncrono**: saldo é validado na hora e transferência sem fundos recebe `422` imediatamente nada de aceitar com `202` para falhar depois. O crédito no destino é assíncrono; se for impossível (conta inexistente/fechada), a saga emite `transfer.reversed` na origem e o dinheiro volta. O cliente acompanha em `GET /transfers/{id}`: `pending → completed | reversed`.
 
 ## As cinco garantias que o código prova
 
